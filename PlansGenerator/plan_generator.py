@@ -16,7 +16,7 @@ for i in range(no_agents):
     data_list = data_line.split(",")
     applicant_ids = np.random.randint(0, high=no_applicants, size=options_applicants)
     prices = np.array([float(data_list[2]) - price_delta, float(data_list[2]), float(data_list[2]) + price_delta])
-    plansfile = open("../datasets/airbnb/agent_" + str(i) + ".plan", "w")
+    plansfile = open("../datasets/airbnb/agent_" + str(i) + ".plans", "w")
     for j in applicant_ids:
         applicant = np.zeros(no_applicants)
         applicant[j] = 1.0
