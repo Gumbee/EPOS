@@ -673,7 +673,7 @@ public class Configuration {
 					.filter(f -> f.endsWith(".target")).findFirst().orElse(null);
 			File targetFile = targetFilePath != null ? new File(targetFilePath) : null;
 
-			System.out.println(targetFilePath);
+			System.out.println("We have the file " +targetFilePath);
 
 			if (targetFile.exists() && targetFile.isFile()) {
 				log.log(Level.INFO, "Loading goal signal from dataset .target file of datast File");

@@ -137,5 +137,5 @@ for i in range(numAgents - 1):
 
 fileData += str(goal_occupancy[numAgents - 1]).replace(" ", "")
 
-with open('Data/goal.info', 'w+') as file:
+with open('../../datasets/airbnb/goal.target', 'w+') as file:
     file.write(fileData)

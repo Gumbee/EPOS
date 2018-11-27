@@ -39,7 +39,7 @@ public class DatasetDescriptor {
 	public int getDimensionality() {
 		return this.dimensionality;
 	}
-	
+
 	public int getTotalNumAgentsAvailable() {
 		return this.totalNumAgentsAvailable;
 	}
