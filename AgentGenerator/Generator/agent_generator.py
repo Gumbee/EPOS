@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+from os import path as os_path
+from os import makedirs as os_makedirs
 
 # to run this script, get the data from InsideAirbnb and put it in the Data folder (file is called listing.csv)
 #
@@ -73,5 +75,8 @@ for i in range(numAgents):
     line = str(latitudes[randomPermutation[i]]) + "," + str(longitudes[randomPermutation[i]]) + "," + str(prices[randomPermutation[i]][1:]) + "," + str(accomodates[randomPermutation[i]]) + "," + str(optimalTypesIndices[randomPermutation[i]]) + "," + ','.join(map(str, optimalTypes[randomPermutation[i]])) + "\n"
     fileData += line.replace(" ", "")
 
-with open('Data/agentData.info', 'w+') as file:
+if not os_path.exists('../../datasets/airbnb/'):
+    os_makedirs('../../datasets/airbnb/')
+
+with open('../../datasets/airbnb/agentData.info', 'w+') as file:
     file.write(fileData)
