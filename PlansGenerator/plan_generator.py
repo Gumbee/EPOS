@@ -26,9 +26,10 @@ with open("../AgentGenerator/Generator/Data/agentData.info", "r") as data:
 				occupancy[i] = np.random.randint(1, high=10)
 				for p in prices:
 					plan = str(0.0) + ":"
-					plan += np.array2string(applicant, separator=',')[1:-1].replace('\n', '')
-					price = np.zeros(no_agents)
-					price[i] = p
-					plan += "," + np.array2string(price, separator=',')[1:-1].replace('\n', '')
-					plan += np.array2string(occupancy, separator=',')[1:-1].replace('\n', '') + "\n"
+            		plan += ','.join(map(str, applicant)).replace('\n', '') + ","
+            		price = np.zeros(no_agents)
+            		price[i] = p
+            		plan += ','.join(map(str, price)).replace('\n', '') + ","
+            		plan += ','.join(map(str, occupancy)).replace('\n', '') + "\n"
 					file.write(plan.replace(" ", ""))
+

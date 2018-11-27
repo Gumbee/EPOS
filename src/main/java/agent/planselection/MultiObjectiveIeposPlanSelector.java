@@ -19,7 +19,7 @@ public class MultiObjectiveIeposPlanSelector<V extends DataType<V>> implements P
         otherResponse.subtract(agent.getPrevSelectedPlan().getValue());
         otherResponse.subtract(agent.getPrevAggregatedResponse());
         otherResponse.add(agent.getAggregatedResponse());
-        
+
         double score = agent.getLocalCostFunction().calcCost(agent.getPrevSelectedPlan());
 //        if(((Vector)agent.getPrevSelectedPlan().getValue()).sum() == 0.0) {
 //        	score = 0.0;

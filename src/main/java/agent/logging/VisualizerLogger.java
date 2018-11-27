@@ -108,10 +108,10 @@ public class VisualizerLogger<V extends DataType<V>> extends AgentLogger<TreeAge
 	 */
 	public void log(MeasurementLog log, int epoch, TreeAgent<V> agent) {
 		if(agent.getIteration() == agent.getNumIterations()-1) {
-			double score = agent.getLocalCostFunction().calcCost(agent.getSelectedPlan());
+            double score = agent.getLocalCostFunction().calcCost(agent.getSelectedPlan());
 			
 			for(Plan<V> p : agent.getPossiblePlans()) {
-				this.scoreSet.add(agent.getLocalCostFunction().calcCost(p));
+                this.scoreSet.add(agent.getLocalCostFunction().calcCost(p));
 			}
 			
 			VisualizerLogger.maxPlans = Math.max(VisualizerLogger.maxPlans, agent.getPossiblePlans().size());
