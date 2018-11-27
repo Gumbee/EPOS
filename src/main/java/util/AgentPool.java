@@ -8,6 +8,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import config.AirbnbConfiguration;
 import config.AirbnbConfiguration.*;
 
 /**
@@ -20,7 +21,7 @@ public class AgentPool {
 
     public static AgentPool agentPool = new AgentPool();
 
-    private String agentDatasetDir;
+    private String agentDatasetDir = "AgentGenerator/Generator/Data/";
 
     // the agent pool containing our agent information
     private ArrayList<AgentData> pool;
@@ -34,7 +35,8 @@ public class AgentPool {
      */
     public void generateAgentPool(int size){
         // parse agent data file and populate pool
-        File file = new File(agentDatasetDir + File.separator + "adentData.info");
+        pool = new ArrayList<>();
+        File file = new File(agentDatasetDir + File.separator + "agentData.info");
         try (Scanner scanner = new Scanner(file)) {
             scanner.useLocale(Locale.ENGLISH);
 
@@ -55,6 +57,10 @@ public class AgentPool {
      * @return the agent data
      */
     public AgentData getAgent(int index){
+        if(agentPool.pool == null){
+            generateAgentPool(AirbnbConfiguration.numAgents);
+        }
+
         AgentData agentData = agentPool.pool.get(index);
         return agentData;
     }
@@ -79,8 +85,9 @@ public class AgentPool {
         agentData.latitude = scanner.nextDouble();
         agentData.longitude = scanner.nextDouble();
         agentData.optimalPrice = scanner.nextDouble();
-        agentData.optimalOccupancy = scanner.nextInt();
+        agentData.optimalOccupancy = (int) scanner.nextDouble();
         agentData.optimalType = scanner.nextDouble();
+        agentData.typeRanking = new ArrayList<>();
         for (int i=0; i<ApplicantType.values().length; ++i) {
             double rank = scanner.nextDouble();
             agentData.typeRanking.add(rank);

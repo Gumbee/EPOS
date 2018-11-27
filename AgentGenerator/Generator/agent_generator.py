@@ -1,36 +1,37 @@
 import numpy as np
 import pandas as pd
 
-import random
-
 # to run this script, get the data from InsideAirbnb and put it in the Data folder (file is called listing.csv)
 #
 # Link:
 # http://insideairbnb.com/get-the-data.html
 
-numAgents = 100
+numAgents = 400
+numApplicants = 400
+seedValue = 22
 
-np.random.seed(120)
-randomPermutation = np.random.permutation(numAgents)
+np.random.seed(seedValue)
 
 # get the data frame
 df = pd.read_csv('Data/listings.csv')
 
+randomPermutation = np.random.permutation(len(df['latitude'].values))
+
 # get latitude and logitude values
-latitudes = df['latitude'].values[randomPermutation[:numAgents]]
-longitudes = df['longitude'].values[randomPermutation[:numAgents]]
+latitudes = df['latitude'].values
+longitudes = df['longitude'].values
 
 # get the prices
-prices = df['price'].values[randomPermutation[:numAgents]]
+prices = df['price'].values
 
 # get the max occupancies
-accomodates = df['accommodates'].values[randomPermutation[:numAgents]]
+accomodates = df['accommodates'].values
 
 # generate the preferred types
 optimalTypesArray = []
 optimalTypesIndices = []
 
-for i in range(len(latitudes)):
+for i in range(len(randomPermutation)):
     percentages = []
 
     totalPercentage = 1.0
@@ -58,8 +59,8 @@ for i in range(len(latitudes)):
     optimalTypesArray.append(percentages)
     optimalTypesIndices.append(maxIndex)
 
-optimalTypes = np.array(optimalTypesArray)[randomPermutation[:numAgents]]
-optimalTypesIndices = np.array(optimalTypesIndices)[randomPermutation[:numAgents]]
+optimalTypes = np.array(optimalTypesArray)
+optimalTypesIndices = np.array(optimalTypesIndices)
 
 np.set_printoptions(suppress=True)
 
@@ -69,7 +70,7 @@ print(optimalTypes.shape)
 fileData = ""
 
 for i in range(numAgents):
-    line = str(latitudes[i]) + "," + str(longitudes[i]) + "," + str(prices[i][1:]) + "," + str(accomodates[i]) + "," + str(optimalTypesIndices[i]) + "," + np.array2string(optimalTypes[i], separator=',') + "\n"
+    line = str(latitudes[randomPermutation[i]]) + "," + str(longitudes[randomPermutation[i]]) + "," + str(prices[randomPermutation[i]][1:]) + "," + str(accomodates[randomPermutation[i]]) + "," + str(optimalTypesIndices[randomPermutation[i]]) + "," + ','.join(map(str, optimalTypes[randomPermutation[i]])) + "\n"
     fileData += line.replace(" ", "")
 
 with open('Data/agentData.info', 'w+') as file:

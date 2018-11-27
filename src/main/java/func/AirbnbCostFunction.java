@@ -5,15 +5,19 @@ import config.Configuration;
 import data.Vector;
 import util.ApplicantPool;
 
+import java.util.logging.Level;
+
 /**
  * @author: Gumbee
  */
-public class AirbnbCostFunction implements CostFunction<Vector>, HasGoal {
+public class AirbnbCostFunction implements DifferentiableCostFunction<Vector>, HasGoal {
+
+    public static Vector goalSignal = null;
 
     // reference to the applicant pool so we can get data about the applicant by his/her id
     @Override
     public String getLabel() {
-        return "Airbnb Global Cost Function";
+        return "Airbnb-Global";
     }
 
     /**
@@ -21,14 +25,12 @@ public class AirbnbCostFunction implements CostFunction<Vector>, HasGoal {
      */
     @Override
     public void populateGoalSignal() {
-        RMSECostFunction.goalSignal = Configuration.goalSignalSupplier.get();
-        RMSECostFunction.goalMean = RMSECostFunction.goalSignal.avg();
-        RMSECostFunction.goalStd = RMSECostFunction.goalSignal.std();
+        AirbnbCostFunction.goalSignal = Configuration.goalSignalSupplier.get();
     }
 
     @Override
     public double calcCost(Vector value) {
-        Vector goalSignal = RMSECostFunction.goalSignal.cloneThis();
+        Vector goalSignal = AirbnbCostFunction.goalSignal.cloneThis();
         return rootMeanSquareError(value, goalSignal).sum();
     }
 
@@ -69,6 +71,49 @@ public class AirbnbCostFunction implements CostFunction<Vector>, HasGoal {
         result.occupancyCost = Math.sqrt(result.occupancyCost);
 
         return result;
+    }
+
+    @Override
+    public Vector calcGradient(Vector value) {
+        AirbnbCostResult result = rootMeanSquareError(value, goalSignal.cloneThis());
+
+        double length = AirbnbConfiguration.numApplicants;
+        double inverse = 1 / result.matchingCost;
+        Vector differenceMatching = value.cloneThis();
+        ZeroOutVector(differenceMatching, 0, AirbnbConfiguration.numApplicants);
+        differenceMatching.subtract(ZeroOutVector(AirbnbCostFunction.goalSignal.cloneThis(), 0, AirbnbConfiguration.numApplicants));
+        differenceMatching.multiply(inverse * length);
+
+
+        length = AirbnbConfiguration.numAgents;
+        inverse = 1 / result.priceCost;
+        Vector differencePrice = value.cloneThis();
+        ZeroOutVector(differencePrice, AirbnbConfiguration.numApplicants, AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents);
+        differencePrice.subtract(ZeroOutVector(AirbnbCostFunction.goalSignal.cloneThis(), AirbnbConfiguration.numApplicants, AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents));
+        differencePrice.multiply(inverse * length);
+
+
+        length = AirbnbConfiguration.numAgents;
+        inverse = 1 / result.occupancyCost;
+        Vector differenceOccupancy = value.cloneThis();
+        ZeroOutVector(differenceOccupancy, AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents, AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents*2);
+        differenceOccupancy.subtract(ZeroOutVector(AirbnbCostFunction.goalSignal.cloneThis(), AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents, AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents*2));
+        differenceOccupancy.multiply(inverse * length);
+
+        differenceMatching.add(differencePrice);
+        differenceMatching.add(differenceOccupancy);
+        return differenceMatching;
+    }
+
+    public Vector ZeroOutVector(Vector value, int start, int end){
+
+        for(int i=0;i<value.getNumDimensions();i++){
+            if(i < start || i >= end){
+                value.setValue(i, 0);
+            }
+        }
+
+        return value;
     }
 
     /**
