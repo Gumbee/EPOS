@@ -18,17 +18,17 @@ for i in range(no_agents):
     prices = np.array([float(data_list[2]) - price_delta, float(data_list[2]), float(data_list[2]) + price_delta])
     plansfile = open("../datasets/airbnb/agent_" + str(i) + ".plans", "w")
     for j in applicant_ids:
-        applicant = np.zeros(no_applicants)
+        applicant = np.ones(no_applicants)*7
         applicant[j] = 1.0
-        occupancy = np.zeros(no_agents)
+        occupancy = np.ones(no_agents)*3
         occupancy[i] = np.random.randint(1, high=10)
         for p in prices:
             plan = str(0.0) + ":"
-            plan += np.array2string(applicant, separator=',')[1:-1].replace('\n', '')
-            price = np.zeros(no_agents)
+            plan += ','.join(map(str, applicant)).replace('\n', '') + ","
+            price = np.ones(no_agents)*5
             price[i] = p
-            plan += "," + np.array2string(price, separator=',')[1:-1].replace('\n', '')
-            plan += np.array2string(occupancy, separator=',')[1:-1].replace('\n', '') + "\n"
+            plan += ','.join(map(str, price)).replace('\n', '') + ","
+            plan += ','.join(map(str, occupancy)).replace('\n', '') + "\n"
             plansfile.write(plan.replace(" ", ""))
             print("-----")
             print(applicant.shape)

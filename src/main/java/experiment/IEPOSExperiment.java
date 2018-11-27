@@ -20,6 +20,7 @@ import agent.logging.AgentLoggingProvider;
 import agent.logging.LoggingProvider;
 import agent.logging.instrumentation.CustomFormatter;
 import agent.planselection.MultiObjectiveIeposPlanSelector;
+import config.AirbnbConfiguration;
 import config.Configuration;
 import data.Plan;
 import data.Vector;
@@ -29,6 +30,7 @@ import protopeer.PeerFactory;
 import protopeer.SimulatedExperiment;
 import protopeer.util.quantities.Time;
 import treestructure.ModifiableTreeArchitecture;
+import util.ApplicantPool;
 
 /**
  * 
@@ -116,6 +118,8 @@ public class IEPOSExperiment {
 		}
 
 		for (int sim = 0; sim < Configuration.numSimulations; sim++) {
+
+			ApplicantPool.generateApplicantPool(AirbnbConfiguration.numApplicants);
 
 			System.out.println("Simulation " + (sim + 1));
 

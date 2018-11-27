@@ -16,6 +16,8 @@ import util.AgentData;
  */
 public class AirbnbPlanCostFunction implements PlanCostFunction<Vector> {
 
+    private int id;
+
     /**
      * Calculate the local cost function for a given plan
      * 
@@ -24,7 +26,8 @@ public class AirbnbPlanCostFunction implements PlanCostFunction<Vector> {
      */
     @Override
     public double calcCost(Plan<Vector> plan) {
-        Vector planData = plan.getValue();
+        this.id = plan.getAgentId();
+        Vector planData = plan.getValue().cloneThis();
         int agentId = plan.getAgentId();
         AgentData agentData = AgentPool.agentPool.getAgent(agentId); 
         double priceCost = calcPriceCost(planData, agentData, agentId);
@@ -64,7 +67,6 @@ public class AirbnbPlanCostFunction implements PlanCostFunction<Vector> {
      * @return local cost associated with the plan due to occupancy resource
      */
     private double calcOccupancyCost(Vector plan, AgentData data, int id) {
-        System.out.println("We have a size of " + plan.getNumDimensions());
         int offset = AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents;
         double diff = plan.getValue(offset+id)-data.optimalOccupancy;
         double occupancyCost = Math.sqrt(Math.pow(diff, 2.0));
@@ -96,9 +98,15 @@ public class AirbnbPlanCostFunction implements PlanCostFunction<Vector> {
      */
     private double getApplicantRank(Vector plan, AgentData data) {
         int applicantId = 0;
-        while (plan.getValue(applicantId) == 0) {
+
+        while (applicantId < plan.getNumDimensions() && Math.abs(plan.getValue(applicantId)-0.0) < 1E-7) {
             ++applicantId;
         }
+
+        if(applicantId == plan.getNumDimensions()){
+            return 0;
+        }
+
         int typeId = ApplicantPool.getTypeId(applicantId);
         double rank = data.typeRanking.get(typeId);
         return rank;
