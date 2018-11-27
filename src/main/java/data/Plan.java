@@ -31,6 +31,7 @@ public class Plan<V extends DataType<V>> implements HasValue<V>, Serializable, C
     private V value;
     private int index;
     private int agentId;
+    private int optimalPrice;
     private double score;
 
     public Plan(V value) {
