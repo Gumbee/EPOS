@@ -182,6 +182,7 @@ unused
 /unused
 output
 /output
+AgentGenerator/Generator/temp-plot.html
 
 # maven
 dependency-reduced-pom.xml
@@ -200,5 +201,3 @@ code/reinforced_epos/models
 # vscode
 .vscode
 *.code-workspace
-
-AgentGenerator/Generator/*.html
