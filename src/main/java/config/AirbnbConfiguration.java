@@ -10,6 +10,8 @@ import java.util.GregorianCalendar;
 public class AirbnbConfiguration {
 
     public static Date currentDate = new GregorianCalendar(2018, Calendar.NOVEMBER, 27).getTime();
+    public static int numApplicants;
+    public static int numAgents;
 
     public enum ApplicantType {
         SINGLE, COUPLE, FAMILY, GROUP, BUSINESS
