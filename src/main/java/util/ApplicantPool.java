@@ -3,15 +3,12 @@ package util;
 import java.util.ArrayList;
 import java.util.Random;
 import data.Vector;
+import config.AirbnbConfiguration.ApplicantType;
 
 /**
  * @author: Gumbee
  */
 public class ApplicantPool {
-
-    private enum ApplicantType {
-        SINGLE, COUPLE, FAMILY, GROUP, BUSINESS
-    }
 
     private static class ApplicantData {
         // unique identifier (on EPOS simulation granularity)
@@ -84,5 +81,26 @@ public class ApplicantPool {
         ApplicantData applicant = pool.get(applicantId);
 
         return applicant.groupSize;
+    }
+
+    /**
+     * Returns the type id of the given applicant
+     *
+     * @param applicantId the applicant's id
+     * @return the id of the type
+     */
+    public static int getTypeId(int applicantId){
+        // get the applicant from the pool
+        ApplicantData applicant = pool.get(applicantId);
+
+        int typeId = 0;
+        for (ApplicantType applicantType : ApplicantType.values()) {
+            if (applicantType != applicant.type) {
+                ++typeId;
+            } else {
+                break;
+            }
+        }
+        return typeId;
     }
 }
