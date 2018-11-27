@@ -24,10 +24,14 @@ for i in range(no_agents):
         occupancy[i] = np.random.randint(1, high=10)
         for p in prices:
             plan = str(0.0) + ":"
-            plan += np.array2string(applicant, separator=',')[1:-1]
+            plan += np.array2string(applicant, separator=',')[1:-1].replace('\n', '')
             price = np.zeros(no_agents)
             price[i] = p
-            plan += "," + np.array2string(price, separator=',')[1:-1] + ","
-            plan += np.array2string(occupancy, separator=',')[1:-1] + "\n"
-            plansfile.write(plan)
+            plan += "," + np.array2string(price, separator=',')[1:-1].replace('\n', '')
+            plan += np.array2string(occupancy, separator=',')[1:-1].replace('\n', '') + "\n"
+            plansfile.write(plan.replace(" ", ""))
+            print("-----")
+            print(applicant.shape)
+            print(price.shape)
+            print(occupancy.shape)
     plansfile.close()

@@ -64,6 +64,7 @@ public class AirbnbPlanCostFunction implements PlanCostFunction<Vector> {
      * @return local cost associated with the plan due to occupancy resource
      */
     private double calcOccupancyCost(Vector plan, AgentData data, int id) {
+        System.out.println("We have a size of " + plan.getNumDimensions());
         int offset = AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents;
         double diff = plan.getValue(offset+id)-data.optimalOccupancy;
         double occupancyCost = Math.sqrt(Math.pow(diff, 2.0));
