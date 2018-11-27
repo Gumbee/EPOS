@@ -196,3 +196,7 @@ experiments/
 /data/energy_split
 code/reinforced_epos/logfiles
 code/reinforced_epos/models
+
+# vscode
+.vscode
+*.code-workspace
