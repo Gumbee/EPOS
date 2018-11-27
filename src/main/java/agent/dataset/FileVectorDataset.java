@@ -71,8 +71,9 @@ public class FileVectorDataset implements Dataset<Vector> {
             scanner.useLocale(Locale.US);
             for (int i = 0; scanner.hasNextLine() && plans.size() < Configuration.numPlans; i++) {
                 String line = scanner.nextLine();
-                Plan<Vector> plan = parsePlan(line);                
+                Plan<Vector> plan = parsePlan(line);
                 plan.setIndex(i);
+                plan.setAgentId(agentId);
                 plans.add(plan);
             }
             if(plans.size() != Configuration.numPlans) {

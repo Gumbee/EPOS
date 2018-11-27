@@ -30,6 +30,7 @@ public class Plan<V extends DataType<V>> implements HasValue<V>, Serializable, C
 
     private V value;
     private int index;
+    private int agentId;
     private double score;
 
     public Plan(V value) {
@@ -46,6 +47,14 @@ public class Plan<V extends DataType<V>> implements HasValue<V>, Serializable, C
 
     public void setIndex(int index) {
         this.index = index;
+    }
+
+    public int getAgentId() {
+        return agentId;
+    }
+
+    public void setAgentId(int id) {
+        this.agentId = id;
     }
 
     public double getScore() {

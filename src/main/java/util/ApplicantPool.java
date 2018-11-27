@@ -2,7 +2,7 @@ package util;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Vector;
+import data.Vector;
 
 /**
  * @author: Gumbee
@@ -13,7 +13,7 @@ public class ApplicantPool {
         SINGLE, COUPLE, FAMILY, GROUP, BUSINESS
     }
 
-    private class ApplicantData {
+    private static class ApplicantData {
         // unique identifier (on EPOS simulation granularity)
         public int id;
         // the amount of people which belong to this applicant (one applicant can represent a group of people)
@@ -23,7 +23,7 @@ public class ApplicantPool {
     }
 
     // the applicant pool containing our applicant information
-    private ArrayList<ApplicantData> pool;
+    private static ArrayList<ApplicantData> pool;
     // define a debugSeed so we can get rid of the randomness while debugging
     private static int debugSeed = 52812;
 
@@ -32,7 +32,7 @@ public class ApplicantPool {
      *
      * @param size: the amount of applicants we should generate
      */
-    public void generateApplicantPool(int size){
+    public static void generateApplicantPool(int size){
         // create a new pool
         pool = new ArrayList<>();
         // create a RNG with a given seed so we can easily debug if something goes wrong
@@ -59,11 +59,11 @@ public class ApplicantPool {
      * @param applicantId the applicant's id
      * @return a vector of 0s and one 1
      */
-    public Vector<Float> getTypeSimilarity(int applicantId){
+    public static Vector getTypeSimilarity(int applicantId){
         // get the applicant from the pool
         ApplicantData applicant = pool.get(applicantId);
         // create the vector of type similarities
-        Vector<Float> similarities = new Vector<>(ApplicantType.values().length);
+        Vector similarities = new Vector(ApplicantType.values().length);
 
         for (ApplicantType applicantType : ApplicantType.values()) {
             // make sure we only set a 1 at the position which corresponds to the applicant's type
@@ -79,7 +79,7 @@ public class ApplicantPool {
      * @param applicantId the applicant's id
      * @return the size of the group
      */
-    public int getGroupSize(int applicantId){
+    public static int getGroupSize(int applicantId){
         // get the applicant from the pool
         ApplicantData applicant = pool.get(applicantId);
 
