@@ -13,4 +13,8 @@ public class AirbnbConfiguration {
     public static int numApplicants;
     public static int numAgents;
 
+    public enum ApplicantType {
+        SINGLE, COUPLE, FAMILY, GROUP, BUSINESS
+    }
+
 }
