@@ -36,7 +36,7 @@ public class AirbnbPlanCostFunction implements PlanCostFunction<Vector> {
     }
 
     public String getLabel() {
-        return "AIRBNB LOCAL COST";
+        return "Airbnb-Local";
     }
 
     /**
