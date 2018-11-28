@@ -125,7 +125,7 @@ public class AirbnbCostFunction implements DifferentiableCostFunction<Vector>, H
         public double occupancyCost;
 
         public double sum(){
-            return matchingCost;
+            return matchingCost+priceCost+occupancyCost;
         }
     }
 }
