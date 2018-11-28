@@ -24,7 +24,7 @@ To run this project do the following:
    1. implement a brute-force approach for small number of agents and plans
    2. compare brute-force and I-EPOS solutions for each scenario (see p.27 of [1])
 7. socio-technical evaluation:
-   1. define a grid of $\lambda$ values
+   1. define a grid of &lambda; values
    2. run optimization for each of them
    3. plot global and local costs, selected plans, etc...
 
