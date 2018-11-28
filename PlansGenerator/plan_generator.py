@@ -7,7 +7,7 @@ no_agents = 400
 no_applicants = 400
 options_applicants = 3
 options_price = 3
-price_delta = 20
+mu,sigma = 0, 50
 
 if not os_path.exists('../datasets/airbnb/'):
 	os_makedirs('../datasets/airbnb/')
@@ -17,6 +17,7 @@ with open("../AgentGenerator/Generator/Data/agentData.info", "r") as data:
 		data_line = data.readline()
 		data_list = data_line.split(",")
 		applicant_ids = np.random.randint(0, high=no_applicants, size=options_applicants)
+        price_delta = abs(np.random.normal(mu,sigma,1))
 		prices = np.array([float(data_list[2]) - price_delta, float(data_list[2]), float(data_list[2]) + price_delta])
 		with open("../datasets/airbnb/agent_" + str(i) + ".plans", "w+") as file:
 			for j in applicant_ids:
