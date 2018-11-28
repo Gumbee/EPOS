@@ -2,6 +2,5 @@
 
 ### Getting started
 To run this project do the following:
-1. Go to AgentGenerator and run the `agent_generator.py` and `goal_generator.py` scripts
-2. Go to PlansGenerator and run the `plan_generator.py`
+1. Go to DataGenerator and run the `initialize_system.py` script so it generates the correct goal signal and plans
 3. Run the `IEPOSExperiment.java` class
