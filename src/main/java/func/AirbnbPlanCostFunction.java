@@ -28,16 +28,20 @@ public class AirbnbPlanCostFunction implements PlanCostFunction<Vector> {
      */
     @Override
     public double calcCost(Plan<Vector> plan) {
-        this.id = plan.getAgentId();
-        Vector planData = plan.getValue().cloneThis();
-        int agentId = plan.getAgentId();
-        AgentData agentData = AgentPool.agentPool.getAgent(agentId); 
-        double priceCost = calcPriceCost(planData, agentData, agentId);
-        double occupancyCost = calcOccupancyCost(planData, agentData, agentId);
-        double typeCost = calcTypeCost(planData, agentData, agentId);
-        double planCost = AirbnbLocalParameters.priceFactor*priceCost + AirbnbLocalParameters.occupancyFactor*occupancyCost
-                         + AirbnbLocalParameters.typeFactor*typeCost;
-        return planCost;
+        if (Double.isNaN(plan.getScore())) {
+            return 0.0;
+        }else{
+            this.id = plan.getAgentId();
+            Vector planData = plan.getValue().cloneThis();
+            int agentId = plan.getAgentId();
+            AgentData agentData = AgentPool.agentPool.getAgent(agentId);
+            double priceCost = calcPriceCost(planData, agentData, agentId);
+            double occupancyCost = calcOccupancyCost(planData, agentData, agentId);
+            double typeCost = calcTypeCost(planData, agentData, agentId);
+            double planCost = AirbnbLocalParameters.priceFactor*priceCost + AirbnbLocalParameters.occupancyFactor*occupancyCost
+                    + AirbnbLocalParameters.typeFactor*typeCost;
+            return planCost;
+        }
     }
 
     public String getLabel() {
