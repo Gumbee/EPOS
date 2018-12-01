@@ -15,7 +15,7 @@ def set_settings(numAgents, numApplicants, lambdaValue, applicantOptions):
             elif "numApplicants=" in spaceless_line:
                 new_lines += "numApplicants=" + str(numApplicants)
             elif "weightsString=" in spaceless_line:
-                new_lines += "weightsString=" + '"0.0,"' + str(lambdaValue)
+                new_lines += "weightsString=" + '"0.0,' + str(lambdaValue) + '"'
             elif "applicantOptions=" in spaceless_line:
                 new_lines += "applicantOptions=" + str(applicantOptions)
             else:
