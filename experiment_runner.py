@@ -1,4 +1,5 @@
 import subprocess
+import numpy as np
 
 def set_settings(numAgents, numApplicants, lambdaValue, applicantOptions):
     with open('conf/epos.properties', 'r+') as file:
@@ -25,12 +26,12 @@ def set_settings(numAgents, numApplicants, lambdaValue, applicantOptions):
 
 
 print("start")
-lambdaValues = [0.0, 0.2, 0.5, 1.0]
-applicantOptions = [7, 30]
+lambdaValues = np.linspace(0, 1, 20)
+applicantOptions = [10]
 
 for lambdaVal in lambdaValues:
     for applicantOption in applicantOptions:
-        set_settings(200, 200, lambdaVal, applicantOption)
+        set_settings(100, 100, lambdaVal, applicantOption)
         subprocess.call("sh ./run_airbnb_optimization.sh", shell=True)
 
 print("end")
