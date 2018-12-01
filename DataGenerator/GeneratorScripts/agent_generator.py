@@ -12,6 +12,10 @@ def get_data():
     # get the data frame
     df = pd.read_csv('Data/listings.csv')
 
+    seedValue = 22
+
+    np.random.seed(seedValue)
+
     randomPermutation = np.random.permutation(len(df['latitude'].values))
 
     # get latitude and logitude values
@@ -63,9 +67,6 @@ def get_data():
 
 
 def run(numAgents, numApplicants):
-    seedValue = 22
-
-    np.random.seed(seedValue)
 
     np.set_printoptions(suppress=True)
 

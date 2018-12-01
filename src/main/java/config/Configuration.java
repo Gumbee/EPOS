@@ -88,6 +88,7 @@ public class Configuration {
 	public static String dataset = null;
 	public static int planDim = -1;
 	public static int numAgents = 100;
+	public static int numApplicants = 100;
 	public static int numPlans = 16;
 	public static Map<Integer, Integer> mapping = null;
 
@@ -281,6 +282,7 @@ public class Configuration {
 		sb.append("numSimulations = ").append(Configuration.numSimulations).append(System.lineSeparator());
 		sb.append("dataset = ").append(Configuration.dataset).append(System.lineSeparator());
 		sb.append("numAgents = ").append(Configuration.numAgents).append(System.lineSeparator());
+		sb.append("numApplicants = ").append(Configuration.numApplicants).append(System.lineSeparator());
 		sb.append("numPlans = ").append(Configuration.numPlans).append(System.lineSeparator());
 		sb.append("planDim = ").append(Configuration.planDim).append(System.lineSeparator());
 		sb.append("numIterations = ").append(Configuration.numIterations).append(System.lineSeparator());
@@ -348,6 +350,11 @@ public class Configuration {
 
 		if (argMap.get("numAgents") != null) {
 			Configuration.numAgents = Helper.clearInt((String) argMap.get("numAgents"));
+
+		}
+
+		if (argMap.get("numApplicants") != null) {
+			Configuration.numApplicants = Helper.clearInt((String) argMap.get("numApplicants"));
 
 		}
 

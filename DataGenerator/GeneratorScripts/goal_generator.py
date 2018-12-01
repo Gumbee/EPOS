@@ -51,18 +51,13 @@ def run(numAgents, numApplicants):
         goal_matching.append(1)
 
     for i in range(numAgents):
-        price = float(prices[randomPermutation[i]][1:].replace(",", ""))
+        price = float(prices[randomPermutation[i]].replace(",", "").replace("$", ""))
 
         density = get_density(i, randomPermutation, latitudes, longitudes, numAgents)
 
-        print("----------")
         target = max(price-50, price/2, price-density)
-        print(target)
-
         goal_price.append(target)
-
         occ_target = 10 / (density / 5)
-        print(occ_target)
         goal_occupancy.append(occ_target)
         sizes.append(occ_target)
 
@@ -75,6 +70,7 @@ def run(numAgents, numApplicants):
 
     fileData = ""
 
+    """
     trace1 = go.Scattermapbox(
         lon=longitudes[randomPermutation[:numAgents]],
         lat=latitudes[randomPermutation[:numAgents]],
@@ -130,6 +126,7 @@ def run(numAgents, numApplicants):
 
     fig = go.Figure(data=data, layout=layout)
     py.plot(fig)
+    """
 
     for i in range(numApplicants):
         fileData += str(goal_matching[i]).replace(" ", "") + ","

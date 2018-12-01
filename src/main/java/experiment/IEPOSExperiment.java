@@ -80,6 +80,7 @@ public class IEPOSExperiment {
 		long timeBefore = System.currentTimeMillis();
 		IEPOSExperiment.runSimulation(Configuration.numChildren, Configuration.numIterations,
 				Configuration.numAgents, createAgent, config);
+
 		long timeAfter = System.currentTimeMillis();
 		System.out.println("IEPOS Finished! It took: " + ((timeAfter - timeBefore) / 1000) + " seconds.");
 	}
@@ -110,7 +111,6 @@ public class IEPOSExperiment {
 		Configuration config = Configuration.fromFile(confPath);
 		config.printConfiguration();
 
-
 		LoggingProvider<MultiObjectiveIEPOSAgent<Vector>> loggingProvider = new LoggingProvider<>();
 		
 		for (AgentLogger logger : config.loggers) {
@@ -119,7 +119,7 @@ public class IEPOSExperiment {
 
 		for (int sim = 0; sim < Configuration.numSimulations; sim++) {
 
-			ApplicantPool.generateApplicantPool(AirbnbConfiguration.numApplicants);
+			ApplicantPool.generateApplicantPool(Configuration.numApplicants);
 
 			System.out.println("Simulation " + (sim + 1));
 

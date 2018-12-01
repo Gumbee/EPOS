@@ -3,7 +3,6 @@ package func;
 import config.AirbnbConfiguration;
 import config.Configuration;
 import data.Vector;
-import util.ApplicantPool;
 
 import java.util.logging.Level;
 
@@ -30,102 +29,90 @@ public class AirbnbCostFunction implements DifferentiableCostFunction<Vector>, H
 
     @Override
     public double calcCost(Vector value) {
-        Vector goalSignal = AirbnbCostFunction.goalSignal.cloneThis();
-        return rootMeanSquareError(value, goalSignal).sum();
-    }
+        Vector matchingValue = GetVectorSection(value, 0, Configuration.numApplicants);
+        Vector priceValue = GetVectorSection(value, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents);
+        Vector occupancyValue = GetVectorSection(value, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents*2);
 
-    /**
-     * Returns the cost of the matching, the price and the occupancy of our model.
-     *
-     * @param a the accumulated global response
-     * @param b the goal signal
-     * @return the cost
-     */
-    private AirbnbCostResult rootMeanSquareError(Vector a, Vector b) {
-        double[] vectorX = a.getValues();
-        double[] vectorY = b.getValues();
+        Vector matchingGoal = GetVectorSection(goalSignal, 0, Configuration.numApplicants);
+        Vector priceGoal = GetVectorSection(goalSignal, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents);
+        Vector occupancyGoal = GetVectorSection(goalSignal, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents*2);
 
-        int numApplicants = AirbnbConfiguration.numApplicants;
-        int numAgents = AirbnbConfiguration.numAgents;
-
-        AirbnbCostResult result = new AirbnbCostResult();
-
-        for (int i = 0; i < numApplicants; i++) {
-            result.matchingCost += Math.pow(vectorX[i] - vectorY[i], 2);
-        }
-
-        for (int i = numApplicants; i < numApplicants+numAgents; i++) {
-            result.priceCost += Math.pow(vectorX[i] - vectorY[i], 2);
-        }
-
-        for (int i = numApplicants+numAgents; i < numApplicants+numAgents*2; i++) {
-            result.occupancyCost += Math.pow(vectorX[i] - vectorY[i], 2);
-        }
-
-        result.matchingCost = result.matchingCost / numApplicants;
-        result.priceCost = result.priceCost / numAgents;
-        result.occupancyCost = result.occupancyCost / numAgents;
-
-        result.matchingCost = Math.sqrt(result.matchingCost);
-        result.priceCost = Math.sqrt(result.priceCost);
-        result.occupancyCost = Math.sqrt(result.occupancyCost);
-
-        return result;
+        return calcCostRMSE(matchingValue, matchingGoal) + calcCostRMSE(priceValue, priceGoal) + calcCostRMSE(occupancyValue, occupancyGoal);
     }
 
     @Override
     public Vector calcGradient(Vector value) {
-        AirbnbCostResult result = rootMeanSquareError(value, goalSignal.cloneThis());
+        int numTotalDimensions = value.getNumDimensions();
 
-        double length = AirbnbConfiguration.numApplicants;
-        double inverse = 1 / result.matchingCost;
-        Vector differenceMatching = value.cloneThis();
-        ZeroOutVector(differenceMatching, 0, AirbnbConfiguration.numApplicants);
-        differenceMatching.subtract(ZeroOutVector(AirbnbCostFunction.goalSignal.cloneThis(), 0, AirbnbConfiguration.numApplicants));
-        differenceMatching.multiply(inverse * length);
+        Vector matchingValue = GetVectorSection(value, 0, Configuration.numApplicants);
+        Vector priceValue = GetVectorSection(value, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents);
+        Vector occupancyValue = GetVectorSection(value, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents*2);
 
+        Vector matchingGoal = GetVectorSection(goalSignal, 0, Configuration.numApplicants);
+        Vector priceGoal = GetVectorSection(goalSignal, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents);
+        Vector occupancyGoal = GetVectorSection(goalSignal, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents*2);
 
-        length = AirbnbConfiguration.numAgents;
-        inverse = 1 / result.priceCost;
-        Vector differencePrice = value.cloneThis();
-        ZeroOutVector(differencePrice, AirbnbConfiguration.numApplicants, AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents);
-        differencePrice.subtract(ZeroOutVector(AirbnbCostFunction.goalSignal.cloneThis(), AirbnbConfiguration.numApplicants, AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents));
-        differencePrice.multiply(inverse * length);
+        Vector matchingGradient = ExtendVectorSection(calcGradientRMSE(matchingValue, matchingGoal), numTotalDimensions, 0);
+        Vector priceGradient = ExtendVectorSection(calcGradientRMSE(priceValue, priceGoal), numTotalDimensions, Configuration.numApplicants);
+        Vector occupancyGradient = ExtendVectorSection(calcGradientRMSE(occupancyValue, occupancyGoal), numTotalDimensions, Configuration.numApplicants+Configuration.numAgents);
 
+        Vector totalGradient = matchingGradient.cloneThis();
+        totalGradient.add(priceGradient);
+        totalGradient.add(occupancyGradient);
 
-        length = AirbnbConfiguration.numAgents;
-        inverse = 1 / result.occupancyCost;
-        Vector differenceOccupancy = value.cloneThis();
-        ZeroOutVector(differenceOccupancy, AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents, AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents*2);
-        differenceOccupancy.subtract(ZeroOutVector(AirbnbCostFunction.goalSignal.cloneThis(), AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents, AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents*2));
-        differenceOccupancy.multiply(inverse * length);
-
-        differenceMatching.add(differencePrice);
-        differenceMatching.add(differenceOccupancy);
-        return differenceMatching;
+        return totalGradient;
     }
 
-    public Vector ZeroOutVector(Vector value, int start, int end){
+    public double calcCostRMSE(Vector value, Vector goal) {
+        double goalMean = goal.avg();
+        double goalStd = goal.std();
+        double otherMean = value.avg();
+        double otherStd = value.std();
 
-        for(int i=0;i<value.getNumDimensions();i++){
-            if(i < start || i >= end){
-                value.setValue(i, 0);
+        Vector goalReplica = goal.cloneThis();
+        goalReplica.subtract(goalMean);
+
+        double multiplicativeFactor = otherStd / (goalStd + 1e-10);
+        goalReplica.multiply(multiplicativeFactor);
+        goalReplica.add(otherMean);
+        return goalReplica.rootMeanSquareError(value);
+    }
+
+    public Vector calcGradientRMSE(Vector value, Vector goal) {
+        double length = value.getNumDimensions();
+
+        double inverse = 1 / calcCostRMSE(value, goal);
+        Vector difference = value.cloneThis();
+        difference.subtract(goal);
+
+        difference.multiply(inverse * length);
+
+        return difference;
+    }
+
+    private Vector GetVectorSection(Vector value, int start, int end){
+
+        Vector returnVector = new Vector(end-start);
+
+        for(int i=start;i<end;i++){
+            returnVector.setValue(i-start, value.getValue(i));
+        }
+
+        return returnVector;
+    }
+
+    private Vector ExtendVectorSection(Vector value, int totalSize, int offset){
+
+        Vector returnVector = new Vector(totalSize);
+
+        for(int i=0;i<totalSize;i++){
+            if(i >= offset && i < offset+value.getNumDimensions()) {
+                returnVector.setValue(i, value.getValue(i-offset));
+            }else{
+                returnVector.setValue(i, 0);
             }
         }
 
-        return value;
-    }
-
-    /**
-     * A class which combines the different costs of our AirbnbCostFunction into one data package
-     */
-    private class AirbnbCostResult {
-        public double matchingCost;
-        public double priceCost;
-        public double occupancyCost;
-
-        public double sum(){
-            return matchingCost+priceCost+occupancyCost;
-        }
+        return returnVector;
     }
 }

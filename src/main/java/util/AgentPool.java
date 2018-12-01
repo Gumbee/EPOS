@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 
 import config.AirbnbConfiguration;
 import config.AirbnbConfiguration.*;
+import config.Configuration;
 
 /**
  * Implments the pool of agents that are optimized by I-EPOS
@@ -21,7 +22,7 @@ public class AgentPool {
 
     public static AgentPool agentPool = new AgentPool();
 
-    private String agentDatasetDir = "AgentGenerator/Generator/Data/";
+    private String agentDatasetDir = "datasets/airbnb/";
 
     // the agent pool containing our agent information
     private ArrayList<AgentData> pool;
@@ -58,7 +59,7 @@ public class AgentPool {
      */
     public AgentData getAgent(int index){
         if(agentPool.pool == null){
-            generateAgentPool(AirbnbConfiguration.numAgents);
+            generateAgentPool(Configuration.numAgents);
         }
 
         AgentData agentData = agentPool.pool.get(index);

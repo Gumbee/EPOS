@@ -1,6 +1,8 @@
 package func;
 
 import java.util.Date;
+
+import config.Configuration;
 import data.Plan;
 import data.Vector;
 import config.AirbnbConfiguration;
@@ -52,7 +54,7 @@ public class AirbnbPlanCostFunction implements PlanCostFunction<Vector> {
      * @return local cost associated with the plan due to price resource
      */
     private double calcPriceCost(Vector plan, AgentData data, int id) {
-        double diff = plan.getValue(AirbnbConfiguration.numApplicants+id)-data.optimalPrice;
+        double diff = plan.getValue(Configuration.numApplicants+id)-data.optimalPrice;
         double priceCost = Math.sqrt(Math.pow(diff, 2.0));
         return priceCost;
     }
@@ -67,7 +69,7 @@ public class AirbnbPlanCostFunction implements PlanCostFunction<Vector> {
      * @return local cost associated with the plan due to occupancy resource
      */
     private double calcOccupancyCost(Vector plan, AgentData data, int id) {
-        int offset = AirbnbConfiguration.numApplicants+AirbnbConfiguration.numAgents;
+        int offset = Configuration.numApplicants+Configuration.numAgents;
         double diff = plan.getValue(offset+id)-data.optimalOccupancy;
         double occupancyCost = Math.sqrt(Math.pow(diff, 2.0));
         return occupancyCost;
