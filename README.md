@@ -28,3 +28,16 @@ To run this project do the following:
    2. run optimization for each of them
    3. plot global and local costs, selected plans, etc...
 
+
+### TODO - Plots
+1. Global cost / Local cost plot (x-axis:iterations)
+2. Global response vs target signal plot
+3. Global cost vs lambda value (x-axis: lambda)
+3. Local cost vs lambda value (x-axis: lambda)
+4. Global cost reduction (x-axis: season)
+5. Global cost reduction (x-axis: #plans)
+6. Local cost of selected plans (x-axis: agents, bar graph)
+7. Number of conflicts (in matching) (x-axis: season)
+8. Profit/Loss (x-axis: agent)
+9. Plan selection index (x-axis: lambda)
+10. Brute force vs EPOS
