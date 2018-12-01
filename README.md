@@ -3,8 +3,7 @@
 ### Getting started
 To run this project do the following:
 1. Make sure you have `pandas` and `numpy` installed (if not, run `pip3 install numpy pandas`)
-2. Go to DataGenerator and run the `initialize_system.py` script so it generates the correct goal signal and plans
-3. Run the `IEPOSExperiment.java` class
+2. Run the bash script `run_airbnb_optimization.sh` by running `sh ./run_airbnb_optimization.sh`
 
 ### TODO
 1. explain changes to model from first assignment
