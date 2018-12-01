@@ -30,14 +30,19 @@ To run this project do the following:
 
 
 ### TODO - Plots
-1. Global cost / Local cost plot (x-axis:iterations)
-2. Global response vs target signal plot
-3. Global cost vs lambda value (x-axis: lambda)
-3. Local cost vs lambda value (x-axis: lambda)
-4. Global cost reduction (x-axis: season)
-5. Global cost reduction (x-axis: #plans)
-6. Local cost of selected plans (x-axis: agents, bar graph)
-7. Number of conflicts (in matching) (x-axis: season)
-8. Profit/Loss (x-axis: agent)
-9. Plan selection index (x-axis: lambda)
-10. Brute force vs EPOS
+1. Global cost / Local cost plot (x-axis:iterations) => Mugeeb
+2. Global response vs target signal plot => Mugeeb
+3. Global cost vs lambda value (x-axis: lambda) => Emilk
+4. Local cost vs lambda value (x-axis: lambda) => Massimo
+5. Global cost reduction (x-axis: season) => Mugeeb
+6. Global cost reduction (x-axis: #plans) => Emilk
+7. Local cost of selected plans (x-axis: agents, bar graph) => Massimo
+8. Number of conflicts (in matching) (x-axis: season) => Mugeeb
+9. Profit/Loss (x-axis: agent) => Massimo
+10. Missmatch type vs agent (x-axis:agent) => Massimo
+11. Plan selection index (x-axis: lambda) => Emilk
+12. Plot map greedy (size of the point => occupancy) (color=price)
+    vs
+    Plot map cooperation (size of the point => occupancy) (color=price)
+     => Mugeeb
+13. Brute force vs EPOS => Emilk
