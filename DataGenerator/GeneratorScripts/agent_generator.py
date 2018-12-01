@@ -67,6 +67,7 @@ def get_data():
 
 
 def run(numAgents, numApplicants):
+    print("Creating agents from the InsideAirbnb dataset...")
 
     np.set_printoptions(suppress=True)
 
@@ -83,3 +84,4 @@ def run(numAgents, numApplicants):
 
     with open('../datasets/airbnb/agentData.info', 'w+') as file:
         file.write(fileData)
+

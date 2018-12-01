@@ -14,6 +14,7 @@ def run(numAgents, numApplicants, options_applicants, options_price):
         os_makedirs('../datasets/airbnb/')
 
     with open("../datasets/airbnb/agentData.info", "r") as data:
+        print("Creating the plans for the agents...")
         applicantOccupancies = []
 
         for i in range(numApplicants):
@@ -34,15 +35,12 @@ def run(numAgents, numApplicants, options_applicants, options_price):
                 applicant_ids.append(random_applicant)
 
             prices = []
-            print("Agent " + str(i) + "------------------")
-            print("We have a original price of " + data_list[2]);
 
             for e in range(options_price):
                 price_delta = np.random.normal(float(data_list[2]), sigma, 1)
                 price_delta = max(price_delta, float(data_list[2])/2)
                 price_delta = min(price_delta, float(data_list[2])*3.0/2)
                 prices.append(price_delta)
-                print("We have a price delta of " + str(price_delta))
 
             with open("../datasets/airbnb/agent_" + str(i) + ".plans", "w+") as file:
                 for p in prices:
@@ -59,14 +57,4 @@ def run(numAgents, numApplicants, options_applicants, options_price):
                         plan += ','.join(map(str, occupancy)).replace('\n', '') + "\n"
                         file.write(plan.replace(" ", ""))
 
-"""
-                    planEmpty = str(0.0) + ":"
-                    planEmpty += ','.join(map(str, np.zeros(numApplicants))).replace('\n', '') + ","
-                    price = np.zeros(numAgents)
-                    price[i] = p
-                    planEmpty += ','.join(map(str, price)).replace('\n', '') + ","
-                    planEmpty += ','.join(map(str, np.zeros(numAgents))).replace('\n', '') + "\n"
-                    file.write(planEmpty.replace(" ", ""))
-
-
-"""
+                print("Plans for Agent " + str(i) + " sucessfully generated.")

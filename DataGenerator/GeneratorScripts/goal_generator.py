@@ -1,8 +1,5 @@
 import numpy as np
 
-import plotly.graph_objs as go
-import plotly.offline as py
-
 from GeneratorScripts.agent_generator import get_data
 
 
@@ -39,6 +36,8 @@ def gaussian(x, mu, sig):
 
 
 def run(numAgents, numApplicants):
+    print("Creating the goal signal based on density measurements...")
+
     randomPermutation, latitudes, longitudes, prices, _, _, _ = get_data()
 
     goal_matching = []
@@ -69,64 +68,6 @@ def run(numAgents, numApplicants):
     goal_occupancy = np.array(goal_occupancy)
 
     fileData = ""
-
-    """
-    trace1 = go.Scattermapbox(
-        lon=longitudes[randomPermutation[:numAgents]],
-        lat=latitudes[randomPermutation[:numAgents]],
-        mode='markers',
-        marker=dict(
-            size=sizes,
-            color=colors,
-            colorscale='Viridis',
-            showscale=False
-        )
-    )
-
-    data = [trace1]
-
-    layout = go.Layout(
-        autosize=False,
-        width=700,
-        height=600,
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='#fff',
-        xaxis=dict(
-            autorange=True,
-            showgrid=False,
-            zeroline=True,
-            showline=False,
-            ticks='',
-            color='#ccc',
-            showticklabels=True
-        ),
-        yaxis=dict(
-            autorange=True,
-            showgrid=False,
-            zeroline=True,
-            showline=False,
-            ticks='',
-            color='#ccc',
-            showticklabels=True
-        ),
-        mapbox=dict(
-            accesstoken='pk.eyJ1IjoiZ3VtYmVlIiwiYSI6ImNqbmhtMjJ5YzBmYTkzcG55cDZlOXF0aGcifQ.zi-z-hT9ez-BtDU8LlicOA',
-            bearing=0,
-            center=dict(
-                lat=np.average(latitudes[randomPermutation[:numAgents]]),
-                lon=np.average(longitudes[randomPermutation[:numAgents]]),
-                # lat=39.608532,
-                # lon=2.892268,
-            ),
-            pitch=0,
-            zoom=8.3,
-            style='mapbox://styles/gumbee/cjnhnhix44mut2sqyffmx6tfn'
-        ),
-    )
-
-    fig = go.Figure(data=data, layout=layout)
-    py.plot(fig)
-    """
 
     for i in range(numApplicants):
         fileData += str(goal_matching[i]).replace(" ", "") + ","
