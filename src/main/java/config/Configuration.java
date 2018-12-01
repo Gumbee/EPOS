@@ -373,7 +373,7 @@ public class Configuration {
 		}
 
 		if (argMap.get("numPlans") != null) {
-			Configuration.numPlans = Configuration.applicantOptions*Configuration.priceOptions+Configuration.priceOptions;
+			Configuration.numPlans = Configuration.applicantOptions*Configuration.priceOptions;
 		}
 
 		if (argMap.get("planDim") != null) {
