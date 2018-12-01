@@ -31,13 +31,13 @@ public class AirbnbCostFunction implements DifferentiableCostFunction<Vector>, H
     public double calcCost(Vector value) {
         Vector matchingValue = GetVectorSection(value, 0, Configuration.numApplicants);
         Vector priceValue = GetVectorSection(value, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents);
-        Vector occupancyValue = GetVectorSection(value, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents*2);
+        Vector occupancyValue = GetVectorSection(value, Configuration.numApplicants+Configuration.numAgents, Configuration.numApplicants+Configuration.numAgents*2);
 
         Vector matchingGoal = GetVectorSection(goalSignal, 0, Configuration.numApplicants);
         Vector priceGoal = GetVectorSection(goalSignal, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents);
-        Vector occupancyGoal = GetVectorSection(goalSignal, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents*2);
+        Vector occupancyGoal = GetVectorSection(goalSignal, Configuration.numApplicants+Configuration.numAgents, Configuration.numApplicants+Configuration.numAgents*2);
 
-        return calcCostRMSE(matchingValue, matchingGoal) + calcCostRMSE(priceValue, priceGoal) + calcCostRMSE(occupancyValue, occupancyGoal);
+        return calcCostRMSE(matchingValue, matchingGoal) + calcCostRMSE(priceValue, priceGoal) + 0.1*calcCostRMSE(occupancyValue, occupancyGoal);
     }
 
     @Override
@@ -46,11 +46,11 @@ public class AirbnbCostFunction implements DifferentiableCostFunction<Vector>, H
 
         Vector matchingValue = GetVectorSection(value, 0, Configuration.numApplicants);
         Vector priceValue = GetVectorSection(value, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents);
-        Vector occupancyValue = GetVectorSection(value, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents*2);
+        Vector occupancyValue = GetVectorSection(value, Configuration.numApplicants+Configuration.numAgents, Configuration.numApplicants+Configuration.numAgents*2);
 
         Vector matchingGoal = GetVectorSection(goalSignal, 0, Configuration.numApplicants);
         Vector priceGoal = GetVectorSection(goalSignal, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents);
-        Vector occupancyGoal = GetVectorSection(goalSignal, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents*2);
+        Vector occupancyGoal = GetVectorSection(goalSignal, Configuration.numApplicants+Configuration.numAgents, Configuration.numApplicants+Configuration.numAgents*2);
 
         Vector matchingGradient = ExtendVectorSection(calcGradientRMSE(matchingValue, matchingGoal), numTotalDimensions, 0);
         Vector priceGradient = ExtendVectorSection(calcGradientRMSE(priceValue, priceGoal), numTotalDimensions, Configuration.numApplicants);

@@ -2,15 +2,16 @@ import subprocess
 import numpy as np
 
 def set_settings(numAgents, numApplicants, lambdaValue, applicantOptions):
-    with open('conf/epos.properties', 'r+') as file:
+    new_lines = ""
+
+    with open('conf/epos.properties', 'r') as file:
         lines = file.readlines()
-        new_lines = ""
 
         for line in lines:
             spaceless_line = line.replace(" ", "")
             if "#" in spaceless_line:
                 new_lines += line.replace("\n", "")
-            if "numAgents=" in spaceless_line:
+            elif "numAgents=" in spaceless_line:
                 new_lines += "numAgents=" + str(numAgents)
             elif "numApplicants=" in spaceless_line:
                 new_lines += "numApplicants=" + str(numApplicants)
@@ -20,11 +21,9 @@ def set_settings(numAgents, numApplicants, lambdaValue, applicantOptions):
                 new_lines += "applicantOptions=" + str(applicantOptions)
             else:
                 new_lines += spaceless_line.replace("\n", "")
-
             new_lines += "\n"
 
-        file.seek(0)
-        file.truncate()
+    with open('conf/epos.properties', 'w') as file:
         file.write(new_lines)
 
 

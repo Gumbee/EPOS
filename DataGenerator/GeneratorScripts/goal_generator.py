@@ -28,11 +28,20 @@ def get_density(id, randomPermutation, latitudes, longitudes, numAgents):
         max_val = density
         max_i = id
 
+    density = density/numAgents*100
+
     return density
 
 
 def gaussian(x, mu, sig):
     return np.exp(-np.power(x - mu, 2.) / (2 * np.power(sig, 2.)))
+
+
+def price_multiplier(density):
+    if density <= 4:
+        return (4-density)*6
+    else:
+        return (4-density)*3
 
 
 def run(numAgents, numApplicants):
@@ -54,9 +63,11 @@ def run(numAgents, numApplicants):
 
         density = get_density(i, randomPermutation, latitudes, longitudes, numAgents)
 
-        target = max(price-50, price/2, price-density)
+        target = max(price-50, price/2, price-price_multiplier(density))
+        target = min(price+50, price*3.0/2, target)
         goal_price.append(target)
-        occ_target = 10 / (density / 5)
+        occ_target = min(10, 10/(density))
+        occ_target = max(1, occ_target)
         goal_occupancy.append(occ_target)
         sizes.append(occ_target)
 
