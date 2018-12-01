@@ -109,6 +109,10 @@ public class AirbnbPlanCostFunction implements PlanCostFunction<Vector> {
             return 0;
         }
 
+        if(applicantId >= Configuration.numApplicants){
+            return 0;
+        }
+
         int typeId = ApplicantPool.getTypeId(applicantId);
         double rank = data.typeRanking.get(typeId);
         return rank;

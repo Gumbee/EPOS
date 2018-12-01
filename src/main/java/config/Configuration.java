@@ -89,6 +89,8 @@ public class Configuration {
 	public static int planDim = -1;
 	public static int numAgents = 100;
 	public static int numApplicants = 100;
+	public static int applicantOptions = 10;
+	public static int priceOptions = 10;
 	public static int numPlans = 16;
 	public static Map<Integer, Integer> mapping = null;
 
@@ -283,6 +285,8 @@ public class Configuration {
 		sb.append("dataset = ").append(Configuration.dataset).append(System.lineSeparator());
 		sb.append("numAgents = ").append(Configuration.numAgents).append(System.lineSeparator());
 		sb.append("numApplicants = ").append(Configuration.numApplicants).append(System.lineSeparator());
+		sb.append("applicantOptions = ").append(Configuration.applicantOptions).append(System.lineSeparator());
+		sb.append("priceOptions = ").append(Configuration.priceOptions).append(System.lineSeparator());
 		sb.append("numPlans = ").append(Configuration.numPlans).append(System.lineSeparator());
 		sb.append("planDim = ").append(Configuration.planDim).append(System.lineSeparator());
 		sb.append("numIterations = ").append(Configuration.numIterations).append(System.lineSeparator());
@@ -358,12 +362,22 @@ public class Configuration {
 
 		}
 
+		if (argMap.get("applicantOptions") != null) {
+			Configuration.applicantOptions = Helper.clearInt((String) argMap.get("applicantOptions"));
+
+		}
+
+		if (argMap.get("priceOptions") != null) {
+			Configuration.priceOptions = Helper.clearInt((String) argMap.get("priceOptions"));
+
+		}
+
 		if (argMap.get("numPlans") != null) {
-			Configuration.numPlans = Helper.clearInt((String) argMap.get("numPlans"));
+			Configuration.numPlans = Configuration.applicantOptions*Configuration.priceOptions+Configuration.priceOptions;
 		}
 
 		if (argMap.get("planDim") != null) {
-			Configuration.planDim = Helper.clearInt((String) argMap.get("planDim"));
+			Configuration.planDim = Configuration.numApplicants+Configuration.numAgents*2;
 		}
 
 		if (argMap.get("numChildren") != null) {

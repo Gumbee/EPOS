@@ -1,6 +1,9 @@
 package experiment;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -112,7 +115,7 @@ public class IEPOSExperiment {
 		config.printConfiguration();
 
 		LoggingProvider<MultiObjectiveIEPOSAgent<Vector>> loggingProvider = new LoggingProvider<>();
-		
+
 		for (AgentLogger logger : config.loggers) {
 			loggingProvider.add(logger);
 		}
@@ -161,7 +164,6 @@ public class IEPOSExperiment {
 		}
 
 		loggingProvider.print();
-
 	}
 
 }
