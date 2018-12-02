@@ -37,7 +37,7 @@ public class AirbnbCostFunction implements DifferentiableCostFunction<Vector>, H
         Vector priceGoal = GetVectorSection(goalSignal, Configuration.numApplicants, Configuration.numApplicants+Configuration.numAgents);
         Vector occupancyGoal = GetVectorSection(goalSignal, Configuration.numApplicants+Configuration.numAgents, Configuration.numApplicants+Configuration.numAgents*2);
 
-        return calcCostRMSE(matchingValue, matchingGoal) + calcCostRMSE(priceValue, priceGoal) + 0.1*calcCostRMSE(occupancyValue, occupancyGoal);
+        return 20*calcCostRMSE(matchingValue, matchingGoal) + calcCostRMSE(priceValue, priceGoal) + 4*calcCostRMSE(occupancyValue, occupancyGoal);
     }
 
     @Override

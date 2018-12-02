@@ -87,9 +87,9 @@ def run(numAgents, numApplicants):
         fileData += str(goal_price[i]).replace(" ", "") + ","
 
     for i in range(numAgents - 1):
-        fileData += str(goal_occupancy[i]).replace(" ", "") + ","
+        fileData += str(int(goal_occupancy[i])).replace(" ", "") + ","
 
-    fileData += str(goal_occupancy[numAgents - 1]).replace(" ", "")
+    fileData += str(int(goal_occupancy[numAgents - 1])).replace(" ", "")
 
     with open('../datasets/airbnb/goal.target', 'w+') as file:
         file.write(fileData)
