@@ -2,6 +2,13 @@ package util;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.io.PrintWriter;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import data.Vector;
 import config.AirbnbConfiguration.ApplicantType;
 
@@ -23,6 +30,8 @@ public class ApplicantPool {
     private static ArrayList<ApplicantData> pool;
     // define a debugSeed so we can get rid of the randomness while debugging
     private static int debugSeed = 52812;
+    // define where to store information about the applicant pool
+    private static String outputDirectory = "datasets/airbnb/";
 
     /**
      * Generates a new random applicant pool of the given size
@@ -35,7 +44,9 @@ public class ApplicantPool {
         // create a RNG with a given seed so we can easily debug if something goes wrong
         Random random = new Random(debugSeed);
 
+        
         // generate N new applicants
+        StringBuilder sb = new StringBuilder();
         for(int i=0;i<size;i++){
             ApplicantData applicant = new ApplicantData();
             // set the id
@@ -47,7 +58,20 @@ public class ApplicantPool {
             applicant.type = ApplicantType.values()[randomTypeIndex];
             // add the generated applicant to the pool
             pool.add(applicant);
+            // export applicant to file
+            String applicantStr = applicant.groupSize + "," + applicant.type.toString();
+            sb.append(applicantStr).append(System.lineSeparator());
         }
+
+        // save applicant pool to file
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(
+				new java.io.FileWriter(outputDirectory + File.separator + "applicant_pool.csv", true)))) {
+			out.append(sb.toString());
+		} catch (FileNotFoundException ex) {
+			Logger.getLogger(ApplicantPool.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IOException e) {
+			Logger.getLogger(ApplicantPool.class.getName()).log(Level.SEVERE, null, e);
+		}
     }
 
     /**
