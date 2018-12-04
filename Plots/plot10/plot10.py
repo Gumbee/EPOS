@@ -9,7 +9,7 @@ def missmatch(plan, agent):
     return np.abs(agent['rank'+str(plan['type'])]-agent['rank'+str(agent['optimalType'])])
 
 # Import selected plans as Pands DataFrame
-df = pd.read_csv('./data/output/selected-plans.csv')
+df = pd.read_csv(os.path.dirname(os.path.abspath(__file__)) + '/data/output/selected-plans.csv')
 
 # Get agent ids
 agents = df.columns[2:]
@@ -19,7 +19,7 @@ num_agents = agents.shape[0]
 plan_ids = df.tail(n=1)
 
 # Get number of applicants from configuration file
-with open('./data/output/used_conf.txt', 'r') as file:
+with open(os.path.dirname(os.path.abspath(__file__)) + '/data/output/used_conf.txt', 'r') as file:
     lines = file.readlines()
     for line in lines:
         if "numApplicants = " in line:
@@ -27,7 +27,7 @@ with open('./data/output/used_conf.txt', 'r') as file:
 
 # Import plans selected by I-EPOS
 plans = {}
-applicant_pool = pd.read_csv('./data/plans/applicant_pool.csv', header=None, names=['group_size', 'type'])
+applicant_pool = pd.read_csv(os.path.dirname(os.path.abspath(__file__)) + '/data/plans/applicant_pool.csv', header=None, names=['group_size', 'type'])
 applicant_types = {
     'SINGLE': 0,
     'COUPLE': 1,
@@ -127,8 +127,8 @@ layout = go.Layout(
 fig = go.Figure(data=data, layout=layout)
 py.plot(fig, auto_open=False)
 
-if not os.path.exists('images'):
-    os.mkdir('images')
+if not os.path.exists(os.path.dirname(os.path.abspath(__file__)) + '/images'):
+    os.mkdir(os.path.dirname(os.path.abspath(__file__)) + '/images')
 
-pio.write_image(fig, 'images/fig10.svg')
+pio.write_image(fig, os.path.dirname(os.path.abspath(__file__)) + '/images/fig10.svg')
 

@@ -225,7 +225,7 @@ layout = go.Layout(
 fig = go.Figure(data=data, layout=layout)
 py.plot(fig, auto_open=False)
 
-if not os.path.exists('images'):
-    os.mkdir('images')
+if not os.path.exists(os.path.dirname(os.path.abspath(__file__)) + '/images'):
+    os.mkdir(os.path.dirname(os.path.abspath(__file__)) + '/images')
 
-pio.write_image(fig, 'images/fig9-1.svg')
+pio.write_image(fig, os.path.dirname(os.path.abspath(__file__)) + '/images/fig9-1.svg')

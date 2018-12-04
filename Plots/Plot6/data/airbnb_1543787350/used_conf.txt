@@ -1,0 +1,32 @@
+CONFIGURATION:
+dataset = airbnb
+output = /Users/mugeebhassan/EPOS/output/airbnb_1543787350
+==============
+numSimulations = 5
+dataset = airbnb
+numAgents = 20
+numApplicants = 180
+applicantOptions = 10
+priceOptions = 10
+numPlans = 100
+planDim = 220
+numIterations = 40
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0
+global cost function = func.AirbnbCostFunction@4590c9c3
+local cost function = func.AirbnbPlanCostFunction@32e6e9c3
+goal signal = 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,189.71172783436978,267.76851057185144,15.0,163.36216905470837,245.4484696087615,623.9741998552998,409.34602407672423,230.88313503326552,244.9817238018668,145.0927530158352,251.28469894780866,221.10794957736385,166.00181843685317,106.00002932052755,110.26081336826911,161.0083520236308,172.18709725943944,434.34605317416924,269.8045937286467,241.1430213823979,1.0,10.0,10.0,1.0,1.0,1.0,1.0,5.0,1.0,2.0,1.0,1.0,10.0,10.0,2.0,10.0,1.0,10.0,1.0,1.0
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: SelectedPlanLogger, GlobalResponseVectorLogger, LocalCostMultiObjectiveLogger, TerminationLogger, GlobalCostLogger, WeightsLogger, PlanFrequencyLogger, ReorganizationLogger, VisualizerLogger, GlobalComplexCostLogger
