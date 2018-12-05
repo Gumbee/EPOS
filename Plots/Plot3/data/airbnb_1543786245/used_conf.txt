@@ -1,0 +1,32 @@
+CONFIGURATION:
+dataset = airbnb
+output = /Users/mugeebhassan/EPOS/output/airbnb_1543786245
+==============
+numSimulations = 5
+dataset = airbnb
+numAgents = 30
+numApplicants = 30
+applicantOptions = 15
+priceOptions = 15
+numPlans = 225
+planDim = 90
+numIterations = 40
+numChildren = 2
+--------------
+alpha = 0.0
+beta = 0
+global cost function = func.AirbnbCostFunction@4590c9c3
+local cost function = func.AirbnbPlanCostFunction@32e6e9c3
+goal signal = 1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,190.5938266495904,267.67820174681344,34.031191976895144,157.88565054921128,244.1858453638419,619.5029838197853,406.8995753601023,226.93714673337388,242.2645853212901,137.76077890457447,251.54414343764537,218.40981093453556,166.03756568186407,106.0000195862124,103.29572242668333,166.4896625034374,168.95545287938958,437.9965934279059,265.778276285165,237.5071667307818,396.8237067073006,79.33432448455042,89.84136767822466,227.6063373045726,71.81910111999676,95.63783871088759,730.542664196859,81.15419846596063,85.06233486939804,173.82684776933655,1.0,10.0,1.0,1.0,1.0,1.0,1.0,7.0,1.0,3.0,1.0,1.0,10.0,10.0,3.0,10.0,1.0,10.0,1.0,1.0,2.0,1.0,10.0,1.0,2.0,10.0,10.0,10.0,5.0,1.0
+--------------
+permutationID = 0
+reorganizationSeed = 0
+permutationSeed = 0
+permutationFile = null
+reorganizationPeriod = 3
+memorizationOffset = 5
+reorganizationStrategy = NEVER
+convergenceTolerance = 0.5
+--------------
+loggingLevel = SEVERE
+Selected Loggers: SelectedPlanLogger, GlobalResponseVectorLogger, LocalCostMultiObjectiveLogger, TerminationLogger, GlobalCostLogger, WeightsLogger, PlanFrequencyLogger, ReorganizationLogger, VisualizerLogger, GlobalComplexCostLogger

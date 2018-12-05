@@ -150,7 +150,11 @@ layout = go.Layout(
 fig = go.Figure(data=data, layout=layout)
 py.plot(fig, auto_open=False)
 
-if not os.path.exists('images'):
-    os.mkdir('images')
+if not os.path.exists(os.path.dirname(os.path.abspath(__file__)) + '/images'):
+    os.mkdir(os.path.dirname(os.path.abspath(__file__)) + '/images')
 
+<<<<<<< HEAD:Plots/plot9/plot9-3.py
 pio.write_image(fig, 'images/fig9-3.svg')
+=======
+pio.write_image(fig, os.path.dirname(os.path.abspath(__file__)) + '/images/fig8-2.svg')
+>>>>>>> e5509aa5a192f52c488e19a86e8e3e8708f361df:Plots/plot8/plot8-2.py
