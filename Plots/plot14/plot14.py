@@ -16,6 +16,7 @@ df_greedy = pd.read_csv(os.path.dirname(os.path.abspath(__file__)) + '//data/out
 
 # Get number of applicants from configuration
 with open(os.path.dirname(os.path.abspath(__file__)) + '/data/output/cooperative/used_conf.txt', 'r') as file:
+
     lines = file.readlines()
     for line in lines:
         if "numApplicants = " in line:
@@ -30,6 +31,7 @@ applicants_cooperative = applicants_cooperative[:num_applicants]
 applicants_greedy = df_greedy.iloc[40]
 applicants_greedy = applicants_greedy.values[2:]
 applicants_greedy = applicants_greedy[:num_applicants]
+
 
 conflicts_cooperative = get_matching_conflicts(applicants_cooperative)
 conflicts_greedy = get_matching_conflicts(applicants_greedy)
