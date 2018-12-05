@@ -183,6 +183,7 @@ unused
 output
 /output
 AgentGenerator/Generator/temp-plot.html
+!Plots/*/data/output
 
 # maven
 dependency-reduced-pom.xml
