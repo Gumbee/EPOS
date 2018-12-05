@@ -194,7 +194,7 @@ layout = go.Layout(
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='#fff',
     mapbox=dict(
-        accesstoken='pk.eyJ1IjoiZ3VtYmVlIiwiYSI6ImNqbmhtMjJ5YzBmYTkzcG55cDZlOXF0aGcifQ.zi-z-hT9ez-BtDU8LlicOA',
+        accesstoken=your_key_here,
         bearing=0,
         center=dict(
             lat=np.average(lat)-0.02,
@@ -212,6 +212,6 @@ py.plot(fig, auto_open=False)
 if not os.path.exists('images'):
     os.mkdir('images')
 
-pio.orca.config.mapbox_access_token = 'pk.eyJ1IjoiZ3VtYmVlIiwiYSI6ImNqbmhtMjJ5YzBmYTkzcG55cDZlOXF0aGcifQ.zi-z-hT9ez-BtDU8LlicOA'
+pio.orca.config.mapbox_access_token = your_key_here
 pio.orca.config.save()
 pio.write_image(fig, 'images/fig9-2-1.svg')

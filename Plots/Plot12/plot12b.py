@@ -95,7 +95,7 @@ layout = go.Layout(
         showticklabels=True
     ),
     mapbox=dict(
-        accesstoken='key',
+        accesstoken=your_key_here,
         bearing=0,
         center=dict(
             lat=np.average(latitudes)-0.02,
@@ -103,7 +103,7 @@ layout = go.Layout(
         ),
         pitch=0,
         zoom=8.3,
-        style='style'
+        style='mapbox://styles/gumbee/cjnhnhix44mut2sqyffmx6tfn'
     )
 )
 fig = go.Figure(data=traces, layout=layout)
@@ -112,6 +112,6 @@ py.plot(fig)
 if not os.path.exists(os.path.dirname(os.path.abspath(__file__)) + '/images'):
     os.mkdir(os.path.dirname(os.path.abspath(__file__)) + '/images')
 
-pio.orca.config.mapbox_access_token = 'key'
+pio.orca.config.mapbox_access_token = your_key_here
 pio.orca.config.save()
 pio.write_image(fig, os.path.dirname(os.path.abspath(__file__)) + '/images/plot12b.svg')
