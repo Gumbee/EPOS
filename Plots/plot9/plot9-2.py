@@ -5,10 +5,12 @@ import plotly.offline as py
 import plotly.graph_objs as go
 import plotly.io as pio
 
-def localcost(plan, agent):
+def localcost(plan, agent, stacked=False):
     price_cost = np.sqrt((plan['price']-agent['optimalPrice'])**2)
     occupancy_cost = np.sqrt((plan['occupancy']-agent['optimalOccupancy'])**2)
     type_cost = np.sqrt((agent['rank'+str(plan['type'])]-agent['rank'+str(agent['optimalType'])])**2)
+    if stacked:
+        return [price_cost, occupancy_cost, type_cost]
     return price_cost+occupancy_cost+type_cost
 
 # Import selected plans as Pands DataFrame
@@ -68,7 +70,6 @@ for (i, agent) in enumerate(agents):
             'type': applicant_types[applicant_pool.iloc[applicant_id]['type']]
         }
 
-
 # Import agent data
 agent_data = {}
 with open('./data/plans/agentData.info', 'r+') as data:
@@ -76,6 +77,8 @@ with open('./data/plans/agentData.info', 'r+') as data:
     for (i, line) in enumerate(lines):
         fields = line.split(',')
         agent_data[agents[i]] = {
+            'lat': float(fields[0]),
+            'lon': float(fields[1]),
             'optimalPrice': float(fields[2]),
             'optimalOccupancy': int(fields[3]),
             'optimalType': int(fields[4]),
@@ -86,187 +89,129 @@ with open('./data/plans/agentData.info', 'r+') as data:
             'rank4': float(fields[9])
         }
 
-# Compute local cost for both scenarios
+# Compute local costs
 local_cost = []
 local_cost_baseline = []
+lat = []
+lon = []
+occupancy = []
+occupancy_baseline = []
 for agent in agents:
     local_cost.append(localcost(plans[agent], agent_data[agent]))
     local_cost_baseline.append(localcost(plans_baseline[agent], agent_data[agent]))
-diff = np.array(local_cost_baseline)-np.array(local_cost)
-n_neg = diff[diff<0].shape[0]
-n_pos = diff[diff>0].shape[0]
-n_zer = diff[diff==0].shape[0]
+    lat.append(agent_data[agent]['lat'])
+    lon.append(agent_data[agent]['lon'])
+    occupancy.append(plans[agent]['occupancy'])
+    occupancy_baseline.append(plans_baseline[agent]['occupancy'])
+local_cost = np.array(local_cost)
+local_cost_baseline = np.array(local_cost_baseline)
+lat = np.array(lat)
+lon = np.array(lon)
+occupancy = np.array(occupancy)
+occupancy_baseline = np.array(occupancy_baseline)
 
 # Plot
-trace = go.Bar(
-    x = ['Negative', 'Neutral', 'Positive'],
-    y = [n_neg, n_zer, n_pos],
+trace = go.Scattermapbox(
+    lon=lon,
+    lat=lat,
+    mode='markers',
     marker=dict(
-        colorscale='Viridis',
         opacity=1,
+        size=2*(occupancy*np.sqrt(2)),
+        color='#f1c40f',
+        colorscale='Viridis',
         showscale=False
     )
 )
 data = [trace]
+
 layout = go.Layout(
     autosize=False,
-    width=700,
-    height=300,
+    width=550,
+    height=420,
+    margin=dict(
+        t=0,
+        b=0,
+        l=0,
+        r=0
+    ),
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='#fff',
-    xaxis=dict(
-        ticks='',
-        autorange=True,
-        showgrid=True,
-        zeroline=False,
-        showline=False,
-        color='#888',
-        showticklabels=True
-    ),
-    yaxis=dict(
-        title='Number of agents',
-        titlefont=dict(
-            family='Arial',
-            size=14,
-            color='#666'
+    mapbox=dict(
+        accesstoken='pk.eyJ1IjoiZ3VtYmVlIiwiYSI6ImNqbmhtMjJ5YzBmYTkzcG55cDZlOXF0aGcifQ.zi-z-hT9ez-BtDU8LlicOA',
+        bearing=0,
+        center=dict(
+            lat=np.average(lat)-0.02,
+            lon=np.average(lon)-0.1,
         ),
-        autorange=True,
-        showgrid=True,
-        zeroline=True,
-        showline=False,
-        ticks='',
-        color='#888',
-        showticklabels=True
+        pitch=0,
+        zoom=8.3,
+        style='mapbox://styles/gumbee/cjnhnhix44mut2sqyffmx6tfn'
     )
 )
+
 fig = go.Figure(data=data, layout=layout)
 py.plot(fig, auto_open=False)
 
 if not os.path.exists('images'):
     os.mkdir('images')
 
-pio.write_image(fig, 'images/fig9-0.svg')
+pio.orca.config.mapbox_access_token = 'pk.eyJ1IjoiZ3VtYmVlIiwiYSI6ImNqbmhtMjJ5YzBmYTkzcG55cDZlOXF0aGcifQ.zi-z-hT9ez-BtDU8LlicOA'
+pio.orca.config.save()
+pio.write_image(fig, 'images/fig9-2-0.2.svg')
 
-trace = go.Bar(
-    x = np.arange(num_agents),
-    y = diff,
+trace = go.Scattermapbox(
+    lon=lon,
+    lat=lat,
+    mode='markers',
     marker=dict(
-        colorscale='Viridis',
         opacity=1,
-        showscale=False
+        size=2*(occupancy_baseline*np.sqrt(2)),
+        color='#f1c40f',
+        colorscale='Viridis',
+        showscale=False,
+        colorbar=dict(
+            thickness=10,
+            titleside='right',
+            ticks='outside',
+            ticklen=3,
+            dtick=2
+        )
     )
 )
 data = [trace]
+
 layout = go.Layout(
     autosize=False,
-    width=700,
-    height=300,
+    width=550,
+    height=420,
+    margin=dict(
+        t=0,
+        b=0,
+        l=0,
+        r=0
+    ),
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='#fff',
-    xaxis=dict(
-        title='Agent',
-        titlefont=dict(
-            family='Arial',
-            size=14,
-            color='#666'
+    mapbox=dict(
+        accesstoken='pk.eyJ1IjoiZ3VtYmVlIiwiYSI6ImNqbmhtMjJ5YzBmYTkzcG55cDZlOXF0aGcifQ.zi-z-hT9ez-BtDU8LlicOA',
+        bearing=0,
+        center=dict(
+            lat=np.average(lat)-0.02,
+            lon=np.average(lon)-0.1,
         ),
-        ticks='',
-        autorange=True,
-        showgrid=True,
-        zeroline=False,
-        showline=False,
-        color='#888',
-        showticklabels=True
-    ),
-    yaxis=dict(
-        title='L_{\lambda=1}-L_{\lambda=0.2}',
-        titlefont=dict(
-            family='Arial',
-            size=14,
-            color='#666'
-        ),
-        autorange=True,
-        showgrid=True,
-        zeroline=True,
-        showline=False,
-        ticks='',
-        color='#888',
-        showticklabels=True
+        pitch=0,
+        zoom=8.3,
+        style='mapbox://styles/gumbee/cjnhnhix44mut2sqyffmx6tfn'
     )
 )
+
 fig = go.Figure(data=data, layout=layout)
 py.plot(fig, auto_open=False)
 
 if not os.path.exists('images'):
     os.mkdir('images')
 
-pio.write_image(fig, 'images/fig9.svg')
-
-# Plot
-trace = go.Bar(
-    x = np.arange(num_agents),
-    y = local_cost,
-    name = '\\lambda=0.2',
-    marker=dict(
-        colorscale='Viridis',
-        opacity=1,
-        showscale=False
-    )
-)
-trace_baseline = go.Bar(
-    x = np.arange(num_agents),
-    y = local_cost_baseline,
-    name = '\\lambda=1',
-    marker=dict(
-        colorscale='Viridis',
-        opacity=1,
-        showscale=False
-    )
-)
-data = [trace, trace_baseline]
-layout = go.Layout(
-    barmode='group',
-    autosize=False,
-    width=700,
-    height=300,
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='#fff',
-    xaxis=dict(
-        title='Agent',
-        titlefont=dict(
-            family='Arial',
-            size=14,
-            color='#666'
-        ),
-        ticks='',
-        autorange=False,
-        range=[19.5, 60.5],
-        showgrid=True,
-        zeroline=False,
-        showline=False,
-        color='#888',
-        showticklabels=True
-    ),
-    yaxis=dict(
-        title='Local Cost',
-        titlefont=dict(
-            family='Arial',
-            size=14,
-            color='#666'
-        ),
-        autorange=True,
-        showgrid=True,
-        zeroline=True,
-        showline=False,
-        ticks='',
-        color='#888',
-        showticklabels=True
-    )
-)
-fig = go.Figure(data=data, layout=layout)
-py.plot(fig, auto_open=False)
-
-if not os.path.exists('images'):
-    os.mkdir('images')
-
-pio.write_image(fig, 'images/fig9-1.svg')
+pio.orca.config.mapbox_access_token = 'pk.eyJ1IjoiZ3VtYmVlIiwiYSI6ImNqbmhtMjJ5YzBmYTkzcG55cDZlOXF0aGcifQ.zi-z-hT9ez-BtDU8LlicOA'
+pio.orca.config.save()
+pio.write_image(fig, 'images/fig9-2-1.svg')

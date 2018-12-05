@@ -10,6 +10,7 @@ import plotly.io as pio
 paths = [name for name in os.listdir('./data') if os.path.isdir(os.path.join('./data', name))]
 beta = []
 localcost = []
+stddev = []
 for path in paths:
     with open(os.path.join('./data', path, 'used_conf.txt'), 'r+') as conf:
         lines = conf.readlines()
@@ -21,16 +22,23 @@ for path in paths:
         lines = file.readlines()
         fields = lines[-1].split(',')
         localcost.append(fields[1])
+        stddev.append(fields[2])
 
 # Sort data points
 perm = np.argsort(beta)
 beta = np.array(beta)[perm]
 localcost = np.array(localcost)[perm]
+stddev = np.array(stddev)[perm]
 
 # Plot the local cost as a function of beta
 trace = go.Scatter(
     x = beta,
     y = localcost,
+    error_y=dict(
+        type='data',
+        array=stddev,
+        visible=True
+    ),
     mode = 'lines+markers',
     marker=dict(
         size=1,
@@ -47,11 +55,11 @@ data = [trace]
 layout = go.Layout(
     autosize=False,
     width=700,
-    height=500,
+    height=300,
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='#fff',
     xaxis=dict(
-        title='$\lambda$',
+        title='\\lambda',
         titlefont=dict(
             family='Arial',
             size=14,
@@ -60,7 +68,7 @@ layout = go.Layout(
         tickmode='linear',
         ticks='',
         dtick=0.1,
-        range=[0, 1],
+        range=[-0.05, 1.05],
         autorange=False,
         showgrid=True,
         zeroline=False,
@@ -75,7 +83,9 @@ layout = go.Layout(
             size=14,
             color='#666'
         ),
-        autorange=True,
+        dtick=2,
+        autorange=False,
+        range=[5,17],
         showgrid=True,
         zeroline=True,
         showline=False,
