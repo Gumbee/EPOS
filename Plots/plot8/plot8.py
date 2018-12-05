@@ -83,19 +83,16 @@ trace = go.Bar(
     y = local_cost,
     marker=dict(
         colorscale='Viridis',
-        opacity=0.6,
-        line = dict(
-            color = 'rgb(231, 99, 250)',
-            width = 1.5
-          ),
+        opacity=1,
         showscale=False
     )
 )
 data = [trace]
 layout = go.Layout(
+    title='Local Cost of Selected Plan',
     autosize=False,
-    width=700,
-    height=500,
+    width=800,
+    height=450,
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='#fff',
     xaxis=dict(
@@ -114,7 +111,7 @@ layout = go.Layout(
         showticklabels=True
     ),
     yaxis=dict(
-        title='Local Cost of Selected Plan',
+        title='Local Cost',
         titlefont=dict(
             family='Arial',
             size=14,
@@ -151,11 +148,7 @@ trace_price = go.Bar(
     name = 'Price',
     marker=dict(
         colorscale='Viridis',
-        opacity=0.6,
-        line = dict(
-            color = 'rgb(231, 99, 250)',
-            width = 1.5
-          ),
+        opacity=1,
         showscale=False
     )
 )
@@ -165,11 +158,7 @@ trace_occupancy = go.Bar(
     name = 'Occupancy',
     marker=dict(
         colorscale='Viridis',
-        opacity=0.6,
-        line = dict(
-            color = 'rgb(231, 99, 250)',
-            width = 1.5
-          ),
+        opacity=1,
         showscale=False
     )
 )
@@ -179,20 +168,17 @@ trace_type = go.Bar(
     name = 'Type',
     marker=dict(
         colorscale='Viridis',
-        opacity=0.6,
-        line = dict(
-            color = 'rgb(231, 99, 250)',
-            width = 1.5
-          ),
+        opacity=1,
         showscale=False
     )
 )
 data = [trace_price, trace_occupancy, trace_type]
 layout = go.Layout(
+    title='Local Cost of Selected Plan',
     barmode='stack',
     autosize=False,
-    width=700,
-    height=500,
+    width=800,
+    height=450,
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='#fff',
     xaxis=dict(
@@ -211,7 +197,7 @@ layout = go.Layout(
         showticklabels=True
     ),
     yaxis=dict(
-        title='Local Cost of Selected Plan',
+        title='Local Cost',
         titlefont=dict(
             family='Arial',
             size=14,

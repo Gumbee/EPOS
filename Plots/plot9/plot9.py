@@ -93,18 +93,17 @@ for agent in agents:
     local_cost.append(localcost(plans[agent], agent_data[agent]))
     local_cost_baseline.append(localcost(plans_baseline[agent], agent_data[agent]))
 diff = np.array(local_cost_baseline)-np.array(local_cost)
+n_neg = diff[diff<0].shape[0]
+n_pos = diff[diff>0].shape[0]
+n_zer = diff[diff==0].shape[0]
 
 # Plot
 trace = go.Bar(
-    x = np.arange(num_agents),
-    y = diff,
+    x = ['Negative', 'Neutral', 'Positive'],
+    y = [n_neg, n_zer, n_pos],
     marker=dict(
         colorscale='Viridis',
-        opacity=0.6,
-        line = dict(
-            color = 'rgb(231, 99, 250)',
-            width = 1.5
-          ),
+        opacity=1,
         showscale=False
     )
 )
@@ -112,7 +111,56 @@ data = [trace]
 layout = go.Layout(
     autosize=False,
     width=700,
-    height=500,
+    height=300,
+    paper_bgcolor='rgba(0,0,0,0)',
+    plot_bgcolor='#fff',
+    xaxis=dict(
+        ticks='',
+        autorange=True,
+        showgrid=True,
+        zeroline=False,
+        showline=False,
+        color='#888',
+        showticklabels=True
+    ),
+    yaxis=dict(
+        title='Number of agents',
+        titlefont=dict(
+            family='Arial',
+            size=14,
+            color='#666'
+        ),
+        autorange=True,
+        showgrid=True,
+        zeroline=True,
+        showline=False,
+        ticks='',
+        color='#888',
+        showticklabels=True
+    )
+)
+fig = go.Figure(data=data, layout=layout)
+py.plot(fig, auto_open=False)
+
+if not os.path.exists('images'):
+    os.mkdir('images')
+
+pio.write_image(fig, 'images/fig9-0.svg')
+
+trace = go.Bar(
+    x = np.arange(num_agents),
+    y = diff,
+    marker=dict(
+        colorscale='Viridis',
+        opacity=1,
+        showscale=False
+    )
+)
+data = [trace]
+layout = go.Layout(
+    autosize=False,
+    width=700,
+    height=300,
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='#fff',
     xaxis=dict(
@@ -131,7 +179,7 @@ layout = go.Layout(
         showticklabels=True
     ),
     yaxis=dict(
-        title='Local Cost Difference (Greedy-Cooperative)',
+        title='L_{\lambda=1}-L_{\lambda=0.2}',
         titlefont=dict(
             family='Arial',
             size=14,
@@ -158,28 +206,20 @@ pio.write_image(fig, 'images/fig9.svg')
 trace = go.Bar(
     x = np.arange(num_agents),
     y = local_cost,
-    name = 'With cooperation',
+    name = '\\lambda=0.2',
     marker=dict(
         colorscale='Viridis',
-        opacity=0.6,
-        line = dict(
-            color = 'rgb(231, 99, 250)',
-            width = 1.5
-          ),
+        opacity=1,
         showscale=False
     )
 )
 trace_baseline = go.Bar(
     x = np.arange(num_agents),
     y = local_cost_baseline,
-    name = 'Greedy',
+    name = '\\lambda=1',
     marker=dict(
         colorscale='Viridis',
-        opacity=0.6,
-        line = dict(
-            color = 'rgb(231, 99, 250)',
-            width = 1.5
-          ),
+        opacity=1,
         showscale=False
     )
 )
@@ -187,8 +227,8 @@ data = [trace, trace_baseline]
 layout = go.Layout(
     barmode='group',
     autosize=False,
-    width=1400,
-    height=500,
+    width=700,
+    height=300,
     paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='#fff',
     xaxis=dict(
@@ -199,7 +239,8 @@ layout = go.Layout(
             color='#666'
         ),
         ticks='',
-        autorange=True,
+        autorange=False,
+        range=[19.5, 60.5],
         showgrid=True,
         zeroline=False,
         showline=False,
